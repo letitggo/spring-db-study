@@ -16,7 +16,7 @@ import java.util.Objects;
 public class MemberNicknameHistory {
     private final Long id;
     private final Long memberId;
-    private final String nickname;      // 과거에 데이터(히스토리)는 정규화의 대상이 아니다.
+    private final String nickname;      // 과거의 데이터(히스토리)는 정규화의 대상이 아니다.
     private final LocalDateTime createdAt;
 
     @Builder
