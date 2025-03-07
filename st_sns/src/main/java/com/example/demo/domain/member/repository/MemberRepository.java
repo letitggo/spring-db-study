@@ -48,15 +48,9 @@ public class MemberRepository {
     }
 
     public Member save(Member member) {
-        /*
-            TODO
-            member id를 보고 갱신 또는 삽입을 정한다
-            반환값은 id를 담아서 반환
-         */
         if (member.getId() == null) {
             return insert(member);
         }
-
         return update(member);
     }
 
