@@ -1,0 +1,13 @@
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: TRACE
+
+spring:
+  datasource:
+    username: root
+    url: jdbc:mysql://${URL}:${PORT}/${DATABASE}?rewriteBatchedStatements=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    password: ${PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
