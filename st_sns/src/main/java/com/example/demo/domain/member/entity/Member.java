@@ -31,10 +31,10 @@ public class Member {
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
 
-    public void changeNickname(String other) {
-        Objects.requireNonNull(other);
-        validateNickname(other);
-        nickname = other;
+    public void changeNickname(String to) {
+        Objects.requireNonNull(to);
+        validateNickname(to);
+        nickname = to;
     }
 
     // custom Exception을 넣어도 되지만 빠르게 진행하기 위해,,
