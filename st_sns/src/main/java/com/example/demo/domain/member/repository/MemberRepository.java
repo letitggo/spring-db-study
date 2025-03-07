@@ -21,30 +21,23 @@ public class MemberRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private static final String TABLE = "member";
+    private static final RowMapper<Member> rowMapper = (rs, rowNum) -> Member
+            .builder()
+            .id(rs.getLong("id"))
+            .email(rs.getString("email"))
+            .nickname(rs.getString("nickname"))
+            .birthday(rs.getObject("birthday", LocalDate.class))
+            .createdAt(rs.getObject("createdAt", LocalDateTime.class))
+            .build();
 
     public Optional<Member> findById(Long id) {
-        /*
-            select * from member
-            where id = :id
-         */
         String sql = String.format("SELECT * FROM %s WHERE id = :id", TABLE);
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("id", id);
 
-        // BeanPropertyRowMapper를 사용해도 되지만 setter를 열어줘야 하기 때문에 NO
-        RowMapper<Member> rowMapper = (rs, rowNum) -> Member
-                .builder()
-                .id(rs.getLong("id"))
-                .email(rs.getString("email"))
-                .nickname(rs.getString("nickname"))
-                .birthday(rs.getObject("birthday", LocalDate.class))
-                .createdAt(rs.getObject("createdAt", LocalDateTime.class))
-                .build();
-
         Member member = namedParameterJdbcTemplate.queryForObject(sql, param, rowMapper);
         return Optional.ofNullable(member);
-
     }
 
     public Member save(Member member) {
@@ -80,6 +73,7 @@ public class MemberRepository {
                 """, TABLE);
         SqlParameterSource params = new BeanPropertySqlParameterSource(member);
         namedParameterJdbcTemplate.update(sql, params);
+
         return member;
     }
 }
