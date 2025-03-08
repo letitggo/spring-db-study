@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
-public class CreateFollowMemberUsecase {
+public class CreateFollowMemberUseCase {
 
     private final MemberReadService memberReadService;
     private final FollowWriteService followWriteService;
