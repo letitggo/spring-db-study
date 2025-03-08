@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,7 +22,7 @@ public class MemberRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private static final String TABLE = "member";
-    private static final RowMapper<Member> rowMapper = (rs, rowNum) -> Member
+    private static final RowMapper<Member> ROW_MAPPER = (rs, rowNum) -> Member
             .builder()
             .id(rs.getLong("id"))
             .email(rs.getString("email"))
@@ -36,7 +37,7 @@ public class MemberRepository {
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("id", id);
 
-        Member member = namedParameterJdbcTemplate.queryForObject(sql, param, rowMapper);
+        Member member = namedParameterJdbcTemplate.queryForObject(sql, param, ROW_MAPPER);
         return Optional.ofNullable(member);
     }
 
@@ -45,6 +46,15 @@ public class MemberRepository {
             return insert(member);
         }
         return update(member);
+    }
+
+    public List<Member> findAllByIdIn(List<Long> ids) {
+        if (ids.isEmpty())
+            return List.of();
+
+        String sql = String.format("SELECT * FROM %s WHERE id in (:ids)", TABLE);
+        MapSqlParameterSource params = new MapSqlParameterSource("ids", ids);
+        return namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
     }
 
     private Member insert(Member member) {
