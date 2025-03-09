@@ -1,17 +1,23 @@
 package com.example.demo.domain.post.repository;
 
+import com.example.demo.domain.PageHelper;
 import com.example.demo.domain.post.dto.DailyPostCount;
 import com.example.demo.domain.post.dto.DailyPostCountRequest;
 import com.example.demo.domain.post.entity.Post;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -26,6 +32,14 @@ public class PostRepository {
                 rs.getObject("createdDate", LocalDate.class),
                 rs.getLong("count")
         );
+    private final RowMapper<Post> ROW_MAPPER = (rs, rowNum) ->
+            Post.builder()
+                    .id(rs.getLong("id"))
+                    .memberId(rs.getLong("memberId"))
+                    .contents(rs.getString("contents"))
+                    .createdDate(rs.getObject("createdDate", LocalDate.class))
+                    .createdAt(rs.getObject("createdAt", LocalDateTime.class))
+                    .build();
 
     public List<DailyPostCount> groupByCreatedDate(DailyPostCountRequest request) {
         // 아래 쿼리는 데이터가 많아지면 성능이 떨어지는 문제가 있음
@@ -37,6 +51,35 @@ public class PostRepository {
                 """, TABLE);
         BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(request);
         return namedParameterJdbcTemplate.query(sql, params, DAILY_POST_COUNT_ROW_MAPPER);
+    }
+
+    public Page<Post> findAllByMemberId(Long memberId, Pageable pageable) {
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("memberId", memberId)
+                .addValue("size", pageable.getPageSize())
+                .addValue("offset", pageable.getOffset());
+
+        String sql = String.format("""
+                SELECT *
+                FROM %s
+                WHERE memberId = :memberId
+                ORDER BY %s
+                LIMIT :size
+                OFFSET :offset
+                """, TABLE, PageHelper.orderBy(pageable.getSort()));
+        List<Post> posts = namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
+        return new PageImpl<>(posts, pageable, getCount(memberId));
+    }
+
+    private Long getCount(Long memberId) {
+        String sql = String.format("""
+                SELECT count(id) as count
+                FROM %s
+                WHERE memberId = :memberId
+                """, TABLE);
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("memberId", memberId);
+        return namedParameterJdbcTemplate.queryForObject(sql, params, Long.class);
     }
 
     public Post save(Post post) {
