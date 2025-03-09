@@ -44,11 +44,17 @@ create table POST
         primary key (id)
 );
 
+
+# 인덱스를 어떤 것으로 잡느냐에 따라 성능이 좌지우지
+# 고려사항
+# 데이터 분포, 어떤 컬럼이 GROUP BY, ORDER BY 등에 들어가는지 모두 고려
 create index POST__index_member_id
     on POST (memberId);
 
 create index POST__index_created_date
     on POST (createdDate);
 
+create index POST__index_member_id_created_date
+    on POST (memberId, createdDate);
 
 
