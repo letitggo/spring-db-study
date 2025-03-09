@@ -7,6 +7,8 @@ import com.example.demo.domain.post.dto.PostDto;
 import com.example.demo.domain.post.entity.Post;
 import com.example.demo.domain.post.service.PostReadService;
 import com.example.demo.domain.post.service.PostWriteService;
+import com.example.demo.util.CursorRequest;
+import com.example.demo.util.PageCursor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,5 +44,13 @@ public class PostController {
             @PageableDefault Pageable pageable
     ) {
         return postReadService.getPosts(memberId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
+    }
+
+    @GetMapping("/members/{memberId}/by-cursor")
+    public PageCursor<Post> getPostsByCursor(
+            @PathVariable Long memberId,
+            CursorRequest cursorRequest
+    ) {
+        return postReadService.getPosts(memberId, cursorRequest);
     }
 }

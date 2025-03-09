@@ -1,6 +1,6 @@
 package com.example.demo.domain.post.repository;
 
-import com.example.demo.domain.PageHelper;
+import com.example.demo.util.PageHelper;
 import com.example.demo.domain.post.dto.DailyPostCount;
 import com.example.demo.domain.post.dto.DailyPostCountRequest;
 import com.example.demo.domain.post.entity.Post;
@@ -80,6 +80,37 @@ public class PostRepository {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("memberId", memberId);
         return namedParameterJdbcTemplate.queryForObject(sql, params, Long.class);
+    }
+
+    public List<Post> findAllByMemberIdAndOrderByIdDesc(Long memberId, int size) {
+        String sql = String.format("""
+                    SELECT *
+                    FROM %s
+                    WHERE memberId = :memberId
+                    ORDER BY id desc
+                    LIMIT :size
+                """, TABLE);
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("memberId", memberId)
+                .addValue("size", size);
+
+        return namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
+    }
+
+    public List<Post> findAllByLessThanIdAndMemberIdAndOrderByIdDesc(Long id, Long memberId, int size) {
+        String sql = String.format("""
+                    SELECT *
+                    FROM %s
+                    WHERE memberId = :memberId and id < :id
+                    ORDER BY id desc
+                    LIMIT :size
+                """, TABLE);
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("memberId", memberId)
+                .addValue("id", id)
+                .addValue("size", size);
+
+        return namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
     }
 
     public Post save(Post post) {
