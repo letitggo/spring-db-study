@@ -1,5 +1,6 @@
 package com.example.demo.application.controller;
 
+import com.example.demo.application.usecase.GetTimelinePostsUsecase;
 import com.example.demo.domain.post.dto.DailyPostCount;
 import com.example.demo.domain.post.dto.DailyPostCountRequest;
 import com.example.demo.domain.post.dto.PostCommand;
@@ -25,6 +26,7 @@ public class PostController {
 
     private final PostWriteService postWriteService;
     private final PostReadService postReadService;
+    private final GetTimelinePostsUsecase getTimelinePostsUsecase;
 
     @PostMapping
     public PostDto create(@RequestBody PostCommand command) {
@@ -52,5 +54,13 @@ public class PostController {
             CursorRequest cursorRequest
     ) {
         return postReadService.getPosts(memberId, cursorRequest);
+    }
+
+    @GetMapping("/members/{memberId}/timeline")
+    public PageCursor<Post> getTimeline(
+            @PathVariable Long memberId,
+            CursorRequest cursorRequest
+    ) {
+        return getTimelinePostsUsecase.execute(memberId, cursorRequest);
     }
 }
