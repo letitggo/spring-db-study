@@ -1,10 +1,10 @@
 package com.example.demo.application.controller;
 
+import com.example.demo.application.usecase.CreatePostUsecase;
 import com.example.demo.application.usecase.GetTimelinePostsUsecase;
 import com.example.demo.domain.post.dto.DailyPostCount;
 import com.example.demo.domain.post.dto.DailyPostCountRequest;
 import com.example.demo.domain.post.dto.PostCommand;
-import com.example.demo.domain.post.dto.PostDto;
 import com.example.demo.domain.post.entity.Post;
 import com.example.demo.domain.post.service.PostReadService;
 import com.example.demo.domain.post.service.PostWriteService;
@@ -24,13 +24,18 @@ import java.util.List;
 @RequestMapping("/post")
 public class PostController {
 
-    private final PostWriteService postWriteService;
+//    private final PostWriteService postWriteService;
     private final PostReadService postReadService;
     private final GetTimelinePostsUsecase getTimelinePostsUsecase;
+    private final CreatePostUsecase createPostUsecase;
 
-    @PostMapping
-    public PostDto create(@RequestBody PostCommand command) {
-        return postWriteService.create(command);
+//    @PostMapping
+//    public PostDto create(@RequestBody PostCommand command) {
+//        return postWriteService.create(command);
+//    }
+    @PostMapping("")
+    public Long timeline(@RequestBody PostCommand command) {
+        return createPostUsecase.execute(command);
     }
 
     @GetMapping("/daily-post-count")

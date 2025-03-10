@@ -15,7 +15,15 @@ public class FollowReadService {
     private final FollowRepository followRepository;
 
     public List<FollowDto> getFollowings(Long fromMemberId) {
-        List<Follow> followings = followRepository.findAllByMemberId(fromMemberId);
+        List<Follow> followings = followRepository.findAllByFromMemberId(fromMemberId);
+        return followings
+                .stream()
+                .map(FollowDto::toDto)
+                .toList();
+    }
+
+    public List<FollowDto> getFollowers(Long toMemberId) {
+        List<Follow> followings = followRepository.findAllByToMemberId(toMemberId);
         return followings
                 .stream()
                 .map(FollowDto::toDto)
