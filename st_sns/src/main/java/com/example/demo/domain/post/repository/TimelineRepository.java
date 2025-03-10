@@ -26,7 +26,7 @@ public class TimelineRepository {
             .createdAt(rs.getObject("createdAt", LocalDateTime.class))
             .build();
 
-    public List<Timeline> getAllByMemberIdAndOrderByIdDesc(Long memberId, int size) {
+    public List<Timeline> findAllByMemberIdAndOrderByIdDesc(Long memberId, int size) {
         String sql = String.format("""
                     SELECT *
                     FROM %s

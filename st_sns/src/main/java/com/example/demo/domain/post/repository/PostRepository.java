@@ -116,6 +116,22 @@ public class PostRepository {
         return namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
     }
 
+    public List<Post> findByAllByInId(List<Long> ids) {
+        if (ids.isEmpty()) {
+            return List.of();
+        }
+
+        String sql = String.format("""
+                    SELECT *
+                    FROM %s
+                    WHERE id in (:ids)
+                """, TABLE);
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("ids", ids);
+
+        return namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
+    }
+
     public List<Post> findAllByLessThanIdAndMemberIdAndOrderByIdDesc(Long id, Long memberId, int size) {
         String sql = String.format("""
                     SELECT *
