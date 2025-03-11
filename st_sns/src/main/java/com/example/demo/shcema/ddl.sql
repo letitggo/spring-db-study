@@ -67,4 +67,17 @@ create table Timeline
     primary key (id)
 );
 
+/*
+mysql에서 락은 row가 아니라 인덱스를 잠근다
+따라서 인덱스가 없는 조건으로 Locking read시 불필요한 데이터들이 잠길 수 있다.
+*/
+start transaction;
+select *
+from POST
+where memberId = 3 and createdAt = '2025-03-10 22:09:09' for update;
+commit;
+
+select count(*) from performance_schema.data_locks;
+select * from information_schema.innodb_trx;
+
 
