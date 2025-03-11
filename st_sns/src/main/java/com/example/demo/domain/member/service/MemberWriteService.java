@@ -8,6 +8,7 @@ import com.example.demo.domain.member.repository.MemberNicknameHistoryRepository
 import com.example.demo.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -18,18 +19,19 @@ public class MemberWriteService {
     private final MemberRepository memberRepository;
     private final MemberNicknameHistoryRepository memberNicknameHistoryRepository;
 
+    @Transactional
     public MemberDto register(RegisterMemberCommand command) {
         Member member = Member.builder()
                 .nickname(command.nickname())
                 .birthday(command.birthday())
                 .email(command.email())
                 .build();
-
         Member saved = memberRepository.save(member);
         saveMemberNicknameHistory(saved);
         return MemberDto.toDto(saved);
     }
 
+    @Transactional
     public void changeNickname(Long memberId, String nickname) {
         /*
             1. 회원의 이름은 변경
