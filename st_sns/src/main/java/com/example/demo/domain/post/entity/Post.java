@@ -14,11 +14,12 @@ public class Post {
     private final Long memberId;
     private final String contents;
     private Long likeCount;
+    private Long version;
     private final LocalDate createdDate;
     private final LocalDateTime createdAt;
 
     @Builder
-    public Post(Long id, Long memberId, String contents, Long likeCount, LocalDate createdDate, LocalDateTime createdAt) {
+    public Post(Long id, Long memberId, String contents, Long likeCount, Long version, LocalDate createdDate, LocalDateTime createdAt) {
         this.id = id;
         this.memberId = Objects.requireNonNull(memberId);
         this.contents = Objects.requireNonNull(contents);
@@ -29,6 +30,7 @@ public class Post {
             3. 조회 시점에 null이면 값을 채워주는 방법
          */
         this.likeCount = likeCount == null ? 0 : likeCount;
+        this.version = version == null ? 0 : version;
         this.createdDate = createdDate == null ? LocalDate.now() : createdDate;
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }

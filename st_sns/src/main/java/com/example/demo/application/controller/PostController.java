@@ -72,6 +72,8 @@ public class PostController {
 
     @PostMapping("/{postId}/like")
     public void likePost(@PathVariable Long postId) {
-        postWriteService.likeCount(postId);
+//        postWriteService.likeCount(postId);
+        // 낙관적 락
+        postWriteService.likeCountByOptimisticLock(postId);
     }
 }
