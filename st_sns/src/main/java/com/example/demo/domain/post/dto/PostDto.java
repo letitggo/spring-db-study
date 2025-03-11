@@ -9,14 +9,16 @@ public record PostDto(
         Long id,
         Long memberId,
         String contents,
+        Long likeCount,
         LocalDate createdDate,
         LocalDateTime createAt
 ) {
-    public static PostDto toDto(Post post) {
+    public static PostDto toDto(Post post, Long postCount) {
         return new PostDto(
                 post.getId(),
                 post.getMemberId(),
                 post.getContents(),
+                postCount,
                 post.getCreatedDate(),
                 post.getCreatedAt()
         );

@@ -19,7 +19,7 @@ public class PostWriteService {
                 .contents(command.contents())
                 .build()
         );
-        return PostDto.toDto(saved);
+        return PostDto.toDto(saved, 0L);
     }
 
     @Transactional

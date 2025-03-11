@@ -2,7 +2,9 @@ package com.example.demo.domain.post.service;
 
 import com.example.demo.domain.post.dto.DailyPostCount;
 import com.example.demo.domain.post.dto.DailyPostCountRequest;
+import com.example.demo.domain.post.dto.PostDto;
 import com.example.demo.domain.post.entity.Post;
+import com.example.demo.domain.post.repository.PostLikeRepository;
 import com.example.demo.domain.post.repository.PostRepository;
 import com.example.demo.util.CursorRequest;
 import com.example.demo.util.PageCursor;
@@ -19,6 +21,7 @@ import java.util.OptionalLong;
 public class PostReadService {
 
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
 
     public List<DailyPostCount> getDailyPostCount(DailyPostCountRequest request) {
         /*
@@ -31,9 +34,14 @@ public class PostReadService {
 
         return postRepository.groupByCreatedDate(request);
     }
+    public Post getPost(Long postId) {
+        return postRepository.findById(postId, false).orElseThrow();
+    }
 
-    public Page<Post> getPosts(Long memberId, Pageable pageable) {
-        return postRepository.findAllByMemberId(memberId, pageable);
+    public Page<PostDto> getPosts(Long memberId, Pageable pageable) {
+        return postRepository.findAllByMemberId(memberId, pageable)
+                .map(post -> PostDto.toDto(post, postLikeRepository.count(post.getId())));
+
     }
 
     public List<Post> getPosts(List<Long> ids) {
