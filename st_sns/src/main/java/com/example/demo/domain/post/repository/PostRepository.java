@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,6 +38,7 @@ public class PostRepository {
                     .id(rs.getLong("id"))
                     .memberId(rs.getLong("memberId"))
                     .contents(rs.getString("contents"))
+                    .likeCount(rs.getLong("likeCount"))
                     .createdDate(rs.getObject("createdDate", LocalDate.class))
                     .createdAt(rs.getObject("createdAt", LocalDateTime.class))
                     .build();
@@ -51,6 +53,22 @@ public class PostRepository {
                 """, TABLE);
         BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(request);
         return namedParameterJdbcTemplate.query(sql, params, DAILY_POST_COUNT_ROW_MAPPER);
+    }
+
+    public Optional<Post> findById(Long postId, Boolean requiredLock) {
+        String sql = String.format("""
+                    SELECT *
+                    FROM %s
+                    WHERE id = :postId
+                """, TABLE);
+        if (requiredLock) {
+            sql += "FOR UPDATE";
+        }
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("postId", postId);
+        Post nullablePost = namedParameterJdbcTemplate.queryForObject(sql, params, ROW_MAPPER);
+        return Optional.ofNullable(nullablePost);
     }
 
     public Page<Post> findAllByMemberId(Long memberId, Pageable pageable) {
@@ -173,10 +191,11 @@ public class PostRepository {
             return insert(post);
         }
         // TODO update
-        throw new UnsupportedOperationException("Post는 갱신을 지원하지 않습니다.");
+        return update(post);
     }
 
-    public void bulkInsert(List<Post> posts) {
+
+    public void bulkInsert (List < Post > posts) {
         String sql = String.format("""
                     INSERT INTO `%s` (memberId, contents, createdDate, createdAt)
                     VALUES (:memberId, :contents, :createdDate, :createdAt)
@@ -189,7 +208,7 @@ public class PostRepository {
         namedParameterJdbcTemplate.batchUpdate(sql, params);
     }
 
-    private Post insert(Post post) {
+    private Post insert (Post post){
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(namedParameterJdbcTemplate.getJdbcTemplate())
                 .withTableName(TABLE)
                 .usingGeneratedKeyColumns("id");
@@ -203,5 +222,20 @@ public class PostRepository {
                 .createdDate(post.getCreatedDate())
                 .createdAt(post.getCreatedAt())
                 .build();
+    }
+
+    private Post update (Post post){
+        String sql = String.format("""
+                UPDATE %s SET
+                    memberId = :memberId,
+                    contents = :contents,
+                    likeCount = :likeCount,
+                    createdDate = :createdDate,
+                    createdAt = :createdAt
+                WHERE id = :id
+                """, TABLE);
+        SqlParameterSource params = new BeanPropertySqlParameterSource(post);
+        namedParameterJdbcTemplate.update(sql, params);
+        return post;
     }
 }

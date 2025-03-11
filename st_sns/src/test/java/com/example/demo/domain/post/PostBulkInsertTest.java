@@ -30,7 +30,7 @@ public class PostBulkInsertTest {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        List<Post> posts = IntStream.range(0, 1_000_000)
+        List<Post> posts = IntStream.range(0, 3_000_000)
                 .parallel()
                 .mapToObj(i -> easyRandom.nextObject(Post.class))
                 .toList();

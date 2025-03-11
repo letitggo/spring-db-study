@@ -28,8 +28,9 @@ public class PostController {
     private final PostReadService postReadService;
     private final GetTimelinePostsUsecase getTimelinePostsUsecase;
     private final CreatePostUsecase createPostUsecase;
+    private final PostWriteService postWriteService;
 
-//    @PostMapping
+    //    @PostMapping
 //    public PostDto create(@RequestBody PostCommand command) {
 //        return postWriteService.create(command);
 //    }
@@ -67,5 +68,10 @@ public class PostController {
             CursorRequest cursorRequest
     ) {
         return getTimelinePostsUsecase.executeByTimeline(memberId, cursorRequest);
+    }
+
+    @PostMapping("/{postId}/like")
+    public void likePost(@PathVariable Long postId) {
+        postWriteService.likeCount(postId);
     }
 }

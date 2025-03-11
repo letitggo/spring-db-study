@@ -6,6 +6,7 @@ import com.example.demo.domain.post.entity.Post;
 import com.example.demo.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,5 +20,12 @@ public class PostWriteService {
                 .build()
         );
         return PostDto.toDto(saved);
+    }
+
+    @Transactional
+    public void likeCount(Long postId) {
+        Post post = postRepository.findById(postId, true).orElseThrow();
+        post.incrementLikeCount();
+        postRepository.save(post);
     }
 }
