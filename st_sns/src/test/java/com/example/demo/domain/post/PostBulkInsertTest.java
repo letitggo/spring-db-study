@@ -32,7 +32,7 @@ public class PostBulkInsertTest {
 
         List<Post> posts = IntStream.range(0, 3_000_000)
                 .parallel()
-                .mapToObj(i -> easyRandom.nextObject(Post.class))
+                .mapToObj(i ->  easyRandom.nextObject(Post.class))
                 .toList();
 
         stopWatch.stop();

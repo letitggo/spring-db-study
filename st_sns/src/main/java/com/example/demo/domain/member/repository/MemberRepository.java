@@ -73,6 +73,18 @@ public class MemberRepository {
                 .build();
     }
 
+    public void bulkInsert(List<Member> members) {
+        String sql = String.format("""
+                    INSERT INTO `%s`(email, nickname, birthday, createdAt)
+                    VALUES(:email, :nickname, :birthday, :createdAt)
+                """, TABLE);
+        SqlParameterSource[] params = members
+                .stream()
+                .map(BeanPropertySqlParameterSource::new)
+                .toArray(SqlParameterSource[]::new);
+        namedParameterJdbcTemplate.batchUpdate(sql, params);
+    }
+
     private Member update(Member member) {
         String sql = String.format("""
                         UPDATE %s SET
