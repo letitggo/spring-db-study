@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -65,5 +66,17 @@ public class FollowRepository {
                 .toMemberId(follow.getToMemberId())
                 .createdAt(follow.getCreatedAt())
                 .build();
+    }
+
+    public void bulkInsert(List<Follow> follows) {
+        String sql = String.format("""
+                    INSERT INTO `%s`(fromMemberId, toMemberId, createdAt)
+                    VALUES(:fromMemberId, :toMemberId, :createdAt)
+                """, TABLE);
+        SqlParameterSource[] params = follows.stream()
+                .map(BeanPropertySqlParameterSource::new)
+                .toArray(SqlParameterSource[]::new);
+
+        namedParameterJdbcTemplate.batchUpdate(sql, params);
     }
 }
