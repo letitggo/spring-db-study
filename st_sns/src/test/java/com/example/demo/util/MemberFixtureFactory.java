@@ -31,7 +31,7 @@ public class MemberFixtureFactory {
         EasyRandomParameters params = new EasyRandomParameters()
                 .excludeField(idPredicated)
                 .dateRange(firstDateTime, lastDateTime)
-                .stringLengthRange(5, 20);
+                .stringLengthRange(5, 10);
 
         return new EasyRandom(params);
     }

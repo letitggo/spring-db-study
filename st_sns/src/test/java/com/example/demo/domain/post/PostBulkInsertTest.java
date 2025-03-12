@@ -4,6 +4,7 @@ import com.example.demo.domain.post.entity.Post;
 import com.example.demo.domain.post.repository.PostRepository;
 import com.example.demo.util.PostFixtureFactory;
 import org.jeasy.random.EasyRandom;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,10 +20,11 @@ public class PostBulkInsertTest {
     @Autowired
     private PostRepository postRepository;
 
+    @DisplayName("id를 지정하여 게시물 작성하기")
     @Test
     public void bulkInsert() {
         EasyRandom easyRandom = PostFixtureFactory.get(
-                4L,
+                3L,
                 LocalDate.of(1900, 1, 1),
                 LocalDate.of(2025, 12, 31)
         );
