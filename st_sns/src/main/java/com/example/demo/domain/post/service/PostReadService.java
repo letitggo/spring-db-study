@@ -4,24 +4,24 @@ import com.example.demo.domain.post.dto.DailyPostCount;
 import com.example.demo.domain.post.dto.DailyPostCountRequest;
 import com.example.demo.domain.post.dto.PostDto;
 import com.example.demo.domain.post.entity.Post;
-import com.example.demo.domain.post.repository.PostLikeRepository;
-import com.example.demo.domain.post.repository.PostRepository;
+import com.example.demo.domain.post.repository.PostJpaRepository;
+import com.example.demo.domain.post.repository.PostLikeJpaRepository;
 import com.example.demo.util.CursorRequest;
 import com.example.demo.util.PageCursor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.OptionalLong;
 
 @Service
 @RequiredArgsConstructor
 public class PostReadService {
 
-    private final PostRepository postRepository;
-    private final PostLikeRepository postLikeRepository;
+    private final PostJpaRepository postJpaRepository;
+    private final PostLikeJpaRepository postLikeJpaRepository;
 
     public List<DailyPostCount> getDailyPostCount(DailyPostCountRequest request) {
         /*
@@ -32,22 +32,24 @@ public class PostReadService {
             GROUP BY createdDate memberId
          */
 
-        return postRepository.groupByCreatedDate(request);
+        return postJpaRepository.groupByCreatedDate(request.memberId(), request.firstDate(), request.lastDate());
     }
+
     public Post getPost(Long postId) {
-        return postRepository.findById(postId, false).orElseThrow();
+        return postJpaRepository.findById(postId).orElseThrow();
     }
 
     public Page<PostDto> getPosts(Long memberId, Pageable pageable) {
-        return postRepository.findAllByMemberId(memberId, pageable)
-                .map(post -> PostDto.toDto(post, postLikeRepository.count(post.getId())));
+        return postJpaRepository.findAllByMemberId(memberId, pageable)
+                .map(post -> PostDto.toDto(post, postLikeJpaRepository.countPostLikesByPostId(post.getId())));
 
     }
 
     public List<Post> getPosts(List<Long> ids) {
-        return postRepository.findByAllByInId(ids);
+        return postJpaRepository.findAllByIdIn(ids);
     }
 
+    // 커서 기반 페이지네이션
     public PageCursor<Post> getPosts(Long memberId, CursorRequest cursorRequest) {
         List<Post> posts = findAllBy(memberId, cursorRequest);
         long nextKey = getNextKey(cursorRequest, posts);
@@ -60,19 +62,20 @@ public class PostReadService {
         return new PageCursor<>(cursorRequest.next(nextKey), posts);
     }
 
+    // 커서 기반 페이지네이션
     private List<Post> findAllBy(Long memberId, CursorRequest cursorRequest) {
         if (cursorRequest.hasKey()) {
-            return postRepository.findAllByLessThanIdAndMemberIdAndOrderByIdDesc(cursorRequest.key(), memberId, cursorRequest.size());
+            return postJpaRepository.findAllByMemberIdAndIdLessThanOrderByIdDesc(memberId, cursorRequest.key(), Limit.of(cursorRequest.size()));
         } else {
-            return postRepository.findAllByMemberIdAndOrderByIdDesc(memberId, cursorRequest.size());
+            return postJpaRepository.findAllByMemberIdOrderByIdDesc(memberId, Limit.of(cursorRequest.size()));
         }
     }
 
     private List<Post> findAllBy(List<Long> memberIds, CursorRequest cursorRequest) {
         if (cursorRequest.hasKey()) {
-            return postRepository.findAllByLessThanIdAndInMemberIdAndOrderByIdDesc(cursorRequest.key(), memberIds, cursorRequest.size());
+            return postJpaRepository.findAllByMemberIdInAndIdLessThanOrderByIdDesc(memberIds, cursorRequest.key(), Limit.of(cursorRequest.size()));
         } else {
-            return postRepository.findAllByInMemberIdAndOrderByIdDesc(memberIds, cursorRequest.size());
+            return postJpaRepository.findAllByMemberIdInOrderByIdDesc(memberIds, Limit.of(cursorRequest.size()));
         }
     }
 

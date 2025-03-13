@@ -1,4 +1,4 @@
-package com.example.demo.domain.post.repository;
+package com.example.demo.domain.post.repository.jdbcRepository;
 
 import com.example.demo.domain.post.entity.PostLike;
 import lombok.RequiredArgsConstructor;

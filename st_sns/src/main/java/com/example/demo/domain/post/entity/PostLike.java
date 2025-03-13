@@ -1,17 +1,27 @@
 package com.example.demo.domain.post.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
+@Entity
+@NoArgsConstructor
 public class PostLike {
-    private final Long id;
-    private final Long memberId;
-    private final Long postId;
-    private final LocalDateTime createdAt;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long memberId;
+    private Long postId;
+    private LocalDateTime createdAt;
 
     @Builder
     public PostLike(Long id, Long memberId, Long postId, LocalDateTime createdAt) {

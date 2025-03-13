@@ -1,7 +1,7 @@
 package com.example.demo.domain.post;
 
 import com.example.demo.domain.post.entity.Post;
-import com.example.demo.domain.post.repository.PostRepository;
+import com.example.demo.domain.post.repository.jdbcRepository.PostRepository;
 import com.example.demo.util.PostFixtureFactory;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.DisplayName;

@@ -1,4 +1,4 @@
-package com.example.demo.domain.post.repository;
+package com.example.demo.domain.post.repository.jdbcRepository;
 
 import com.example.demo.util.PageHelper;
 import com.example.demo.domain.post.dto.DailyPostCount;
@@ -36,12 +36,12 @@ public class PostRepository {
     private final RowMapper<Post> ROW_MAPPER = (rs, rowNum) ->
             Post.builder()
                     .id(rs.getLong("id"))
-                    .memberId(rs.getLong("memberId"))
+                    .memberId(rs.getLong("member_id"))
                     .contents(rs.getString("contents"))
-                    .likeCount(rs.getLong("likeCount"))
+                    .likeCount(rs.getLong("like_count"))
                     .version(rs.getLong("version"))
-                    .createdDate(rs.getObject("createdDate", LocalDate.class))
-                    .createdAt(rs.getObject("createdAt", LocalDateTime.class))
+                    .createdDate(rs.getObject("created_date", LocalDate.class))
+                    .createdAt(rs.getObject("created_at", LocalDateTime.class))
                     .build();
 
     public List<DailyPostCount> groupByCreatedDate(DailyPostCountRequest request) {
@@ -105,7 +105,7 @@ public class PostRepository {
         String sql = String.format("""
                     SELECT *
                     FROM %s
-                    WHERE memberId = :memberId
+                    WHERE member_id = :memberId
                     ORDER BY id desc
                     LIMIT :size
                 """, TABLE);

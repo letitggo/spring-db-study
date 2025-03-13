@@ -1,22 +1,29 @@
 package com.example.demo.domain.post.entity;
 
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
+@Entity
+@NoArgsConstructor
 public class Post {
 
-    private final Long id;
-    private final Long memberId;
-    private final String contents;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long memberId;
+    private String contents;
     private Long likeCount;
+    @Version // 낙관적 락 버전 정보
     private Long version;
-    private final LocalDate createdDate;
-    private final LocalDateTime createdAt;
+    private LocalDate createdDate;
+    private LocalDateTime createdAt;
 
     @Builder
     public Post(Long id, Long memberId, String contents, Long likeCount, Long version, LocalDate createdDate, LocalDateTime createdAt) {
