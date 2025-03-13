@@ -1,8 +1,13 @@
 package com.example.demo.domain.member.entity;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
@@ -10,12 +15,17 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
+@Entity
+@NoArgsConstructor
 public class Member {
-    private final Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nickname;    // 닉네임은 변경 가능
-    private final String email;
-    private final LocalDate birthday;
-    private final LocalDateTime createdAt;
+    private String email;
+    private LocalDate birthday;
+    private LocalDateTime createdAt;
 
     private final static Long NAME_MAX_LENGTH = 10L;
 

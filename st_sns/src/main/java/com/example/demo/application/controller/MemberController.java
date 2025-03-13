@@ -23,22 +23,22 @@ public class MemberController {
         return memberWriteService.register(command);
     }
 
-    @GetMapping("/{id}")
-    public MemberDto getMember(@PathVariable Long id) {
-        return memberReadService.getMember(id);
+    @GetMapping("/{memberId}")
+    public MemberDto getMember(@PathVariable Long memberId) {
+        return memberReadService.getMember(memberId);
     }
 
-    @PostMapping("/{id}/name")
+    @PostMapping("/{memberId}/name")
     public MemberDto changNickname(
-            @PathVariable Long id,
+            @PathVariable Long memberId,
             String nickname
     ) {
-        memberWriteService.changeNickname(id, nickname);
-        return memberReadService.getMember(id);
+        memberWriteService.changeNickname(memberId, nickname);
+        return memberReadService.getMember(memberId);
     }
 
     @GetMapping("/{memberId}/nickname-histories")
-    public List<MemberNicknameHistoryDto> getNicknameHistories(@PathVariable Long id) {
-        return memberReadService.getNicknameHistories(id);
+    public List<MemberNicknameHistoryDto> getNicknameHistories(@PathVariable Long memberId) {
+        return memberReadService.getNicknameHistories(memberId);
     }
 }

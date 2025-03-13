@@ -49,13 +49,13 @@ create table POST
 # 고려사항
 # 데이터 분포, 어떤 컬럼이 GROUP BY, ORDER BY 등에 들어가는지 모두 고려
 create index POST__index_member_id
-    on POST (memberId);
+    on POST (member_id);
 
 create index POST__index_created_date
-    on POST (createdDate);
+    on POST (created_date);
 
 create index POST__index_member_id_created_date
-    on POST (memberId, createdDate);
+    on POST (member_id, created_date);
 
 create table Timeline
 (
@@ -84,7 +84,7 @@ from POST
 where memberId = 3 and createdAt = '2025-03-10 22:09:09' for update;
 commit;
 
-select count(*) from performance_schema.data_locks;
+select * from performance_schema.data_locks;
 select * from information_schema.innodb_trx;
 
 

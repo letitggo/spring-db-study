@@ -1,4 +1,4 @@
-package com.example.demo.domain.member.repository;
+package com.example.demo.domain.member.repository.jdbcRepository;
 
 import com.example.demo.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
