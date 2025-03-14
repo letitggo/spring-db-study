@@ -8,14 +8,16 @@ public record MemberDto(
         Long id,
         String email,
         String nickname,
-        LocalDate birthday
+        LocalDate birthday,
+        String fcmToken
 ) {
     public static MemberDto toDto(Member member) {
         return new MemberDto(
                 member.getId(),
                 member.getEmail(),
                 member.getNickname(),
-                member.getBirthday()
+                member.getBirthday(),
+                member.getFcmToken()
         );
     }
 }

@@ -26,6 +26,7 @@ public class Member {
     private String email;
     private LocalDate birthday;
     private LocalDateTime createdAt;
+    private String fcmToken;
 
     private final static Long NAME_MAX_LENGTH = 10L;
 
@@ -52,4 +53,7 @@ public class Member {
         Assert.isTrue(nickname.length() <= NAME_MAX_LENGTH, "최대 길이를 초과했습니다.");
     }
 
+    public void updateFcmToken(String token) {
+        this.fcmToken = token;
+    }
 }

@@ -40,6 +40,10 @@ dependencies {
 	testImplementation 'org.jeasy:easy-random-core:5.0.0'
 
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// fcm
+	implementation 'com.google.firebase:firebase-admin:9.2.0'
+
 }
 
 tasks.named('test') {

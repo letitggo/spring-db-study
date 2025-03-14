@@ -2,6 +2,7 @@ package com.example.demo.domain.member.service;
 
 import com.example.demo.domain.member.dto.MemberDto;
 import com.example.demo.domain.member.dto.RegisterMemberCommand;
+import com.example.demo.domain.member.dto.UpdateFcmTokenCommand;
 import com.example.demo.domain.member.entity.Member;
 import com.example.demo.domain.member.entity.MemberNicknameHistory;
 import com.example.demo.domain.member.repository.MemberJpaRepository;
@@ -64,5 +65,11 @@ public class MemberWriteService {
                 .createdAt(LocalDateTime.now())
                 .build();
         memberNicknameHistoryJpaRepository.save(history);
+    }
+
+    @Transactional
+    public void updateToken(UpdateFcmTokenCommand command, Long memberId) {
+        Member member = memberJpaRepository.findById(memberId).orElseThrow();
+        member.updateFcmToken(command.token());
     }
 }
