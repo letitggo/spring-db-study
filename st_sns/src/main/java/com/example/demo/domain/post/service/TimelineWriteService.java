@@ -1,8 +1,7 @@
 package com.example.demo.domain.post.service;
 
-import com.example.demo.domain.member.service.MemberWriteService;
 import com.example.demo.domain.post.entity.Timeline;
-import com.example.demo.domain.post.repository.TimelineRepository;
+import com.example.demo.domain.post.repository.jdbcRepository.TimelineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import java.util.List;
 public class TimelineWriteService {
 
     private final TimelineRepository timelineRepository;
-    private final MemberWriteService memberWriteService;
 
     public void deliveryToTimeline(Long postId, List<Long> toMemberIds) {
         List<Timeline> timelines = toMemberIds.stream()

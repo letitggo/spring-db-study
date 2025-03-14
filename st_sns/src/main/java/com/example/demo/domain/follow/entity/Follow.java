@@ -1,7 +1,12 @@
 package com.example.demo.domain.follow.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -19,12 +24,16 @@ import java.time.LocalDateTime;
     데이터 최신성을 보장해야하는가 - O
  */
 @Getter
+@Entity
+@NoArgsConstructor
 public class Follow {
 
-    private final Long id;
-    private final Long fromMemberId;
-    private final Long toMemberId;
-    private final LocalDateTime createdAt;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long fromMemberId;
+    private Long toMemberId;
+    private LocalDateTime createdAt;
 
     @Builder
     public Follow(Long id, Long fromMemberId, Long toMemberId, LocalDateTime createdAt) {
@@ -33,4 +42,5 @@ public class Follow {
         this.toMemberId = toMemberId;
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
+
 }
