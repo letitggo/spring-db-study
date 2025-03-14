@@ -2,7 +2,7 @@ package com.example.demo.domain.follow.service;
 
 import com.example.demo.domain.follow.dto.FollowDto;
 import com.example.demo.domain.follow.entity.Follow;
-import com.example.demo.domain.follow.repository.FollowRepository;
+import com.example.demo.domain.follow.repository.FollowJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +12,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FollowReadService {
 
-    private final FollowRepository followRepository;
+    private final FollowJpaRepository followJpaRepository;
 
     public List<FollowDto> getFollowings(Long fromMemberId) {
-        List<Follow> followings = followRepository.findAllByFromMemberId(fromMemberId);
+        List<Follow> followings = followJpaRepository.findAllByFromMemberId(fromMemberId);
         return followings
                 .stream()
                 .map(FollowDto::toDto)
@@ -23,7 +23,7 @@ public class FollowReadService {
     }
 
     public List<FollowDto> getFollowers(Long toMemberId) {
-        List<Follow> followings = followRepository.findAllByToMemberId(toMemberId);
+        List<Follow> followings = followJpaRepository.findAllByToMemberId(toMemberId);
         return followings
                 .stream()
                 .map(FollowDto::toDto)

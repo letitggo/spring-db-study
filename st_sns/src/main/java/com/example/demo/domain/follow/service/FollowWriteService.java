@@ -1,7 +1,7 @@
 package com.example.demo.domain.follow.service;
 
 import com.example.demo.domain.follow.entity.Follow;
-import com.example.demo.domain.follow.repository.FollowRepository;
+import com.example.demo.domain.follow.repository.FollowJpaRepository;
 import com.example.demo.domain.member.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 public class FollowWriteService {
 
-    private final FollowRepository followRepository;
+    private final FollowJpaRepository followJpaRepository;
 
     /*
         1. Member Entity를 매개변수로 넘기는 경우 강결합 발생
@@ -24,6 +24,6 @@ public class FollowWriteService {
                 .fromMemberId(fromMember.id())
                 .toMemberId(toMember.id())
                 .build();
-        followRepository.save(follow);
+        followJpaRepository.save(follow);
     }
 }
