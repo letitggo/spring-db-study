@@ -29,7 +29,7 @@ public class MemberBulkInsertTest {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        List<Member> members = IntStream.range(1, 100)
+        List<Member> members = IntStream.range(1, 100_000)
                 .parallel()
                 .mapToObj(i -> easyRandom.nextObject(Member.class))
                 .toList();

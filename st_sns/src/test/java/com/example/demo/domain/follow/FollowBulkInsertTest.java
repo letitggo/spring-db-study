@@ -41,7 +41,7 @@ public class FollowBulkInsertTest {
                 2L
         );
 
-        List<Follow> follows = IntStream.range(0, 1_000_000)
+        List<Follow> follows = IntStream.range(0, 100_000)
                 .mapToObj(i -> easyRandom.nextObject(Follow.class))
                 .toList();
 
