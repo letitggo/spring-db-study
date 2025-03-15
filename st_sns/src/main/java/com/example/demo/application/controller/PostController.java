@@ -13,10 +13,9 @@ import com.example.demo.domain.post.service.PostWriteService;
 import com.example.demo.util.CursorRequest;
 import com.example.demo.util.PageCursor;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,9 +51,9 @@ public class PostController {
     @GetMapping("/members/{memberId}")
     public Page<PostDto> getPosts(
             @PathVariable Long memberId,
-            @PageableDefault Pageable pageable
+            @ParameterObject Pageable pageable
     ) {
-        return postReadService.getPosts(memberId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
+        return postReadService.getPosts(memberId, pageable);
     }
 
     @GetMapping("/members/{memberId}/by-cursor")

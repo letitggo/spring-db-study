@@ -83,7 +83,7 @@ public class TimelineRepository {
 
     public void bulkInsert(List<Timeline> timelines) {
         String sql = String.format("""
-                    INSERT INTO `%s` (memberId, postId, createdAt)
+                    INSERT INTO `%s` (member_id, post_id, created_at)
                     VALUES(:memberId, :postId, :createdAt)
                 """, TABLE);
         SqlParameterSource[] parameterSources = timelines
