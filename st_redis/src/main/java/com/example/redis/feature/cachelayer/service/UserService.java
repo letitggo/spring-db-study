@@ -1,6 +1,6 @@
-package com.example.redis.service;
+package com.example.redis.feature.cachelayer.service;
 
-import com.example.redis.dto.UserProfile;
+import com.example.redis.feature.cachelayer.dto.UserProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
