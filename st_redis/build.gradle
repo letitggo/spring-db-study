@@ -13,14 +13,28 @@ java {
 	}
 }
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// redis를 사용한 세션 클러스터링
+	implementation 'org.springframework.session:spring-session-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
