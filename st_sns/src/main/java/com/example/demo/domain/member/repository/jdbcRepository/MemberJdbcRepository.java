@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberRepository {
+public class MemberJdbcRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

@@ -1,7 +1,7 @@
 package com.example.demo.domain.member;
 
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.member.repository.jdbcRepository.MemberBulkRepository;
+import com.example.demo.domain.member.repository.jdbcRepository.MemberBulkJdbcRepository;
 import com.example.demo.util.MemberFixtureFactory;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 public class MemberBulkInsertTest {
 
     @Autowired
-    private MemberBulkRepository memberBulkRepository;
+    private MemberBulkJdbcRepository memberBulkJdbcRepository;
 
     @Test
     void bulkInsert() {
@@ -40,7 +40,7 @@ public class MemberBulkInsertTest {
         StopWatch queryStopWatch = new StopWatch();
         queryStopWatch.start();
 
-        memberBulkRepository.bulkInsert(members);
+        memberBulkJdbcRepository.bulkInsert(members);
 
         queryStopWatch.stop();
         System.out.println("DB 인서트 시간 : " + queryStopWatch.getTotalTimeSeconds());

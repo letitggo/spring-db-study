@@ -3,8 +3,8 @@ package com.example.demo.domain.member.service;
 import com.example.demo.domain.member.dto.MemberDto;
 import com.example.demo.domain.member.dto.MemberNicknameHistoryDto;
 import com.example.demo.domain.member.entity.Member;
-import com.example.demo.domain.member.repository.MemberJpaRepository;
-import com.example.demo.domain.member.repository.MemberNicknameHistoryJpaRepository;
+import com.example.demo.domain.member.repository.MemberRepository;
+import com.example.demo.domain.member.repository.jpaRepository.MemberNicknameHistoryJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +14,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberReadService {
 
-    private final MemberJpaRepository memberJpaRepository;
+    private final MemberRepository memberRepository;
     private final MemberNicknameHistoryJpaRepository memberNicknameHistoryJpaRepository;
 
     public MemberDto getMember(Long id) {
-        Member member = memberJpaRepository.findById(id).orElseThrow();
+        Member member = memberRepository.findById(id).orElseThrow();
         return MemberDto.toDto(member);
     }
 
     public List<MemberDto> getMembers(List<Long> ids) {
-        List<Member> members = memberJpaRepository.findAllByIdIn(ids);
+        List<Member> members = memberRepository.findAllByIdIn(ids);
         return members
                 .stream()
                 .map(MemberDto::toDto)

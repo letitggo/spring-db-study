@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberBulkRepository {
+public class MemberBulkJdbcRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

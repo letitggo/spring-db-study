@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberNicknameHistoryRepository {
+public class MemberNicknameHistoryJdbcRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
