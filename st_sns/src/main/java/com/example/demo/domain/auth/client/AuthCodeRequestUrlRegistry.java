@@ -10,16 +10,15 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class AuthCodeRequestUrlMapper {
+public class AuthCodeRequestUrlRegistry {
 
     private final Map<OauthType, AuthCodeRequestUrl> mapping;
 
-    public AuthCodeRequestUrlMapper(Set<AuthCodeRequestUrl> providers) {
+    public AuthCodeRequestUrlRegistry(Set<AuthCodeRequestUrl> providers) {
         this.mapping = providers.stream()
                 // mapping 채워주기
                 // 1. 빈 객체 자신의 OauthType을 key로
                 // 2. 자기 자신(빈)을 value로 저장
-
                 .collect(Collectors.toUnmodifiableMap(AuthCodeRequestUrl::supportType, Function.identity()));
     }
     // 3. 이후 oauthType으로 알맞는 빈 객체 찾아서 provide()호출

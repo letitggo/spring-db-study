@@ -11,11 +11,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class MemberAuthClientMapper {
+public class MemberAuthClientRegistry {
 
-    private Map<OauthType, MemberAuthClient> mapping;
+    private final Map<OauthType, MemberAuthClient> mapping;
 
-    public MemberAuthClientMapper(Set<MemberAuthClient> clients) {
+    public MemberAuthClientRegistry(Set<MemberAuthClient> clients) {
         this.mapping = clients.stream()
                 .collect(Collectors.toUnmodifiableMap(
                         MemberAuthClient::supportType,  // 구현체에게서 key 추출
