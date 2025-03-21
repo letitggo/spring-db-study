@@ -1,0 +1,33 @@
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: TRACE
+
+spring:
+  datasource:
+    username: ${DATABASE_USERNAME}
+#    url: jdbc:mysql://${DATABASE_URL}/${DATABASE_TABLE}?rewriteBatchedStatements=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://${DATABASE_URL}/${DATABASE_TABLE}?rewriteBatchedStatements=true&profileSQL=true&logger=Slf4JLogger&maxQuerySizeToLog=999999&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      stream:
+        consumer:
+          auto-offset-reset: latest
+          group: timeline-group
+fcm:
+  certification: ${FCM_CERTIFICATION}
+
+oauth:
+  kakao:
+    client-id: ${KAKAO_CLIENT_ID}
+    redirect-url: ${KAKAO_REDIRECT_URL}
+    url:
+      auth-code-url: https://kauth.kakao.com/oauth/authorize
+      token-url: https://kauth.kakao.com/oauth/token
+      user-info-url: https://kapi.kakao.com/v2/user/me

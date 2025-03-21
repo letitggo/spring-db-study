@@ -4,7 +4,7 @@ create table Member
     email varchar(20) not null,
     nickname varchar(20) not null,
     birthday date not null,
-    createdAt datetime not null,
+    created_at datetime not null,
     constraint member_id_uindex
         primary key (id)
 );
@@ -12,9 +12,9 @@ create table Member
 create table MemberNicknameHistory
 (
     id int auto_increment,
-    memberId int not null,
+    member_id int not null,
     nickname varchar(20) not null,
-    createdAt datetime not null,
+    created_at datetime not null,
     constraint memberNicknameHistory_id_uindex
         primary key (id)
 );
@@ -22,24 +22,24 @@ create table MemberNicknameHistory
 create table Follow
 (
     id int auto_increment,
-    fromMemberId int not null,
-    toMemberId int not null,
-    createdAt datetime not null,
+    from_member_id int not null,
+    to_member_id int not null,
+    created_at datetime not null,
     constraint Follow_id_uindex
         primary key (id)
 );
 
 create unique index Follow_fromMemberId_toMemberId_uindex
-    on Follow (fromMemberId, toMemberId);
+    on Follow (from_member_id, to_member_id);
 
 
 create table POST
 (
     id int auto_increment,
-    memberId int not null,
+    member_id int not null,
     contents varchar(100) not null,
-    createdDate date not null,
-    createdAt datetime not null,
+    created_date date not null,
+    created_at datetime not null,
     constraint POST_id_uindex
         primary key (id)
 );
@@ -60,9 +60,9 @@ create index POST__index_member_id_created_date
 create table Timeline
 (
     id int auto_increment,
-    memberId int not null,
-    posId int not null,
-    createdAt datetime not null,
+    member_id int not null,
+    post_id int not null,
+    created_at datetime not null,
     constraint Timeline_id_uindex
     primary key (id)
 );
@@ -81,7 +81,7 @@ mysql에서 락은 row가 아니라 인덱스를 잠근다
 start transaction;
 select *
 from POST
-where memberId = 3 and createdAt = '2025-03-10 22:09:09' for update;
+where member_id = 3 and created_at = '2025-03-10 22:09:09' for update;
 commit;
 
 select * from performance_schema.data_locks;
