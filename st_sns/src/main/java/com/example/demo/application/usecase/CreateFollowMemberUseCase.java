@@ -3,7 +3,7 @@ package com.example.demo.application.usecase;
 import com.example.demo.domain.follow.service.FollowWriteService;
 import com.example.demo.domain.member.dto.MemberDto;
 import com.example.demo.domain.member.service.MemberReadService;
-import com.example.demo.domain.notification.service.FcmService;
+import com.example.demo.domain.notification.NotificationChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +24,7 @@ public class CreateFollowMemberUseCase {
 
     private final MemberReadService memberReadService;
     private final FollowWriteService followWriteService;
-    private final FcmService fcmService;
+    private final NotificationChannel notificationChannel;
 
     @Transactional
     public void execute(Long fromMemberId, Long toMemberId) {
@@ -34,7 +34,7 @@ public class CreateFollowMemberUseCase {
          */
         MemberDto fromMember = memberReadService.getMember(fromMemberId);
         MemberDto toMember = memberReadService.getMember(toMemberId);
-        fcmService.sendMessage(toMember.fcmToken(), "팔로우 알림", fromMember.nickname() + "님이 회원님을 팔로우했어요!");
+        notificationChannel.send(toMember, "팔로우 알림", fromMember.nickname() + "님이 회원님을 팔로우했어요!");
 
         followWriteService.create(fromMember, toMember);
     }

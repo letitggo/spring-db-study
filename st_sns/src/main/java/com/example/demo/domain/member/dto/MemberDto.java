@@ -9,7 +9,7 @@ public record MemberDto(
         String email,
         String nickname,
         LocalDate birthday,
-        String fcmToken
+        String notificationToken
 ) {
     public static MemberDto toDto(Member member) {
         return new MemberDto(
@@ -17,7 +17,7 @@ public record MemberDto(
                 member.getEmail(),
                 member.getNickname(),
                 member.getBirthday(),
-                member.getFcmToken()
+                member.getNotificationToken()
         );
     }
 }

@@ -30,7 +30,7 @@ public class FollowRepository {
     public List<Follow> findAllByFromMemberId(Long fromMemberId) {
         String sql = String.format("""
                    SELECT * FROM %s
-                   WHERE fromMemberId = :fromMemberId
+                   WHERE from_memberId = :from_member_id
                 """, TABLE);
         MapSqlParameterSource params = new MapSqlParameterSource("fromMemberId", fromMemberId);
         return namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
@@ -39,7 +39,7 @@ public class FollowRepository {
     public List<Follow> findAllByToMemberId(Long toMemberId) {
         String sql = String.format("""
                    SELECT * FROM %s
-                   WHERE toMemberId = :toMemberId
+                   WHERE to_member_id = :toMemberId
                 """, TABLE);
         MapSqlParameterSource params = new MapSqlParameterSource("toMemberId", toMemberId);
         return namedParameterJdbcTemplate.query(sql, params, ROW_MAPPER);
@@ -70,7 +70,7 @@ public class FollowRepository {
 
     public void bulkInsert(List<Follow> follows) {
         String sql = String.format("""
-                    INSERT INTO `%s`(fromMemberId, toMemberId, createdAt)
+                    INSERT INTO `%s`(from_member_id, to_member_id, created_at)
                     VALUES(:fromMemberId, :toMemberId, :createdAt)
                 """, TABLE);
         SqlParameterSource[] params = follows.stream()

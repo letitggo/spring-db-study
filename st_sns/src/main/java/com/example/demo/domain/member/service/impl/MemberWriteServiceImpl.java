@@ -71,6 +71,6 @@ public class MemberWriteServiceImpl implements MemberWriteService {
     @Transactional
     public void updateToken(UpdateFcmTokenCommand command, Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow();
-        member.updateFcmToken(command.token());
+        member.updateNotificationToken(command.token());
     }
 }
